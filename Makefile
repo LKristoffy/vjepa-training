@@ -1,4 +1,4 @@
-.PHONY: help setup install download-data train clean lint format check-env install-system-deps fix-torchcodec update-transformers
+.PHONY: help setup install download-data train clean lint format check-env install-system-deps fix-torchcodec update-transformers notebook
 
 # Default target
 help:
@@ -10,6 +10,7 @@ help:
 	@echo "  update-transformers - Update transformers to dev version (supports VJEPA2)"
 	@echo "  download-data     - Download the UCF101 subset dataset"
 	@echo "  train             - Run the training script"
+	@echo "  notebook          - Start Jupyter notebook server for model analysis"
 	@echo "  clean             - Clean up generated files and cache"
 	@echo "  lint              - Run linting checks"
 	@echo "  format            - Format code with ruff"
@@ -140,3 +141,15 @@ quickstart:
 	@echo "Quick start setup..."
 	$(MAKE) setup
 	@echo "Please restart your shell and run 'make install' to continue"
+
+# Run Jupyter notebook server
+notebook: check-env
+	@echo "Setting FFmpeg library paths for torchcodec..."
+	@echo "Starting Jupyter notebook server..."
+	@echo "The notebook will open in your browser at http://localhost:8888"
+	@echo "Navigate to notebooks/model_analysis_demo.ipynb to get started"
+	@export DYLD_LIBRARY_PATH="$$(brew --prefix ffmpeg)/lib:$$DYLD_LIBRARY_PATH" && \
+	export DYLD_FALLBACK_LIBRARY_PATH="$$(brew --prefix ffmpeg)/lib:$$DYLD_FALLBACK_LIBRARY_PATH" && \
+	uv run jupyter notebook --notebook-dir=notebooks --port=8888
+
+

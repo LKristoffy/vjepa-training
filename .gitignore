@@ -14,3 +14,7 @@ UCF101_subset/
 wandb/
 
 model/
+
+.ipynb_checkpoints/
+
+.vscode/
